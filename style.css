@@ -1,0 +1,542 @@
+/* ============================================================
+   KŌPĪ — style.css
+   Custom styles to complement Tailwind CSS
+   ============================================================ */
+
+/* ── Base & Resets ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Syne', sans-serif;
+  background-color: #0D0D0D;
+  color: #F0EDE8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── CSS Custom Properties ── */
+:root {
+  --ink:     #0D0D0D;
+  --ink-2:   #1A1A1A;
+  --ink-3:   #2A2929;
+  --smoke:   #888480;
+  --ash:     #C4C0BB;
+  --linen:   #F0EDE8;
+  --paper:   #FAF8F5;
+  --gold:    #C8A96E;
+  --gold-lt: #E2C98A;
+  --sage:    #5A6B52;
+  --sage-lt: #8FA885;
+  --rust:    #A04A2A;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--ink-2); }
+::-webkit-scrollbar-thumb  { background: var(--ink-3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ── Selection ── */
+::selection {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar {
+  background: transparent;
+  transition: background 0.5s var(--ease-in-out),
+              border-color 0.5s var(--ease-in-out),
+              backdrop-filter 0.5s;
+}
+
+#navbar.scrolled {
+  background: rgba(13, 13, 13, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(42, 41, 41, 0.8);
+}
+
+.nav-link {
+  position: relative;
+  padding-bottom: 2px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--gold);
+  transition: width 0.3s var(--ease-out-expo);
+}
+.nav-link:hover::after { width: 100%; }
+
+.mobile-menu {
+  max-height: 0;
+  transition: max-height 0.4s var(--ease-in-out);
+  overflow: hidden;
+}
+.mobile-menu.open {
+  max-height: 400px;
+}
+
+/* Burger animation */
+#burger.open .bar:nth-child(1) {
+  transform: rotate(40deg) translateY(1px);
+}
+#burger.open .bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+#burger.open .bar:nth-child(3) {
+  transform: rotate(-40deg) translateY(-1px);
+}
+
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  background: var(--gold);
+  color: var(--ink);
+  border: 1px solid var(--gold);
+  transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold-lt);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(200, 169, 110, 0.3);
+}
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--linen);
+  border: 1px solid rgba(240, 237, 232, 0.2);
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+.btn-ghost:hover {
+  background: rgba(240, 237, 232, 0.06);
+  border-color: rgba(240, 237, 232, 0.4);
+  transform: translateY(-1px);
+}
+.btn-ghost:active { transform: translateY(0); }
+
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero-bg {
+  background:
+    radial-gradient(ellipse 80% 60% at 65% 40%, rgba(200,169,110,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 20% 70%, rgba(90,107,82,0.05) 0%, transparent 60%),
+    var(--ink);
+}
+
+.headline-stroke {
+  -webkit-text-stroke: 1px rgba(200,169,110,0.5);
+  color: transparent;
+  transition: color 0.3s, -webkit-text-stroke 0.3s;
+}
+.headline-stroke:hover {
+  color: rgba(200,169,110,0.15);
+}
+
+/* Avatar rings */
+.avatar-ring {
+  border: 2px solid var(--ink);
+}
+
+/* Phone mockup float */
+.phone-float {
+  animation: float 7s ease-in-out infinite;
+}
+
+.notif-float {
+  animation: float-offset 7s ease-in-out 2s infinite;
+}
+
+.timer-float {
+  animation: float-offset 7s ease-in-out 1s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-18px); }
+}
+@keyframes float-offset {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50%       { transform: translateY(-12px) rotate(1deg); }
+}
+
+/* App UI elements */
+.app-tab {
+  background: rgba(42,41,41,0.6);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.app-tab:hover {
+  background: rgba(200,169,110,0.15);
+}
+.app-tab-active {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.app-card {
+  background: rgba(42,41,41,0.7);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+.app-btn {
+  background: var(--gold);
+  color: var(--ink);
+  width: 100%;
+  transition: opacity 0.2s;
+}
+.app-btn:hover { opacity: 0.85; }
+
+/* Ticker */
+.ticker-track {
+  animation: ticker 22s linear infinite;
+}
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Scroll line animation */
+.scroll-line {
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); }
+  50%       { opacity: 1;   transform: scaleY(1.2); }
+}
+
+
+/* ============================================================
+   VALUE PROPS
+   ============================================================ */
+.section-label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.value-card {
+  background: var(--ink-2);
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease-out-expo);
+}
+.value-card:hover {
+  border-color: rgba(200,169,110,0.3);
+  background: #1f1e1e;
+  transform: translateY(-4px);
+}
+
+.value-card-featured {
+  background: var(--gold);
+}
+.value-card-featured:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(200,169,110,0.2);
+}
+
+.icon-box {
+  background: rgba(200,169,110,0.08);
+  border: 1px solid rgba(200,169,110,0.15);
+}
+
+.icon-box-featured {
+  background: rgba(13,13,13,0.15);
+}
+
+
+/* ============================================================
+   MENU
+   ============================================================ */
+.menu-card {
+  background: var(--ink-3);
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: border-color 0.3s, transform 0.35s var(--ease-out-expo), box-shadow 0.35s;
+}
+.menu-card:hover {
+  border-color: rgba(200,169,110,0.2);
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.4);
+}
+
+.badge-new {
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+.badge-trend {
+  background: var(--sage);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.pesan-btn {
+  background: rgba(200,169,110,0.1);
+  color: var(--gold-lt);
+  border: 1px solid rgba(200,169,110,0.2);
+}
+.pesan-btn:hover {
+  background: var(--gold);
+  color: var(--ink);
+  border-color: var(--gold);
+}
+
+
+/* ============================================================
+   HOW IT WORKS
+   ============================================================ */
+.step-card {
+  background: var(--ink-2);
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease-out-expo);
+}
+.step-card:hover {
+  border-color: rgba(200,169,110,0.25);
+  background: #1f1e1e;
+  transform: translateY(-4px);
+}
+
+.step-connector {
+  background: linear-gradient(90deg, rgba(200,169,110,0.4), rgba(200,169,110,0.1));
+  border: none;
+  height: 1px;
+}
+
+.comparison-winner {
+  background: var(--gold);
+}
+
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testi-card {
+  background: var(--ink-3);
+  transition: border-color 0.3s, transform 0.3s var(--ease-out-expo);
+}
+.testi-card:hover {
+  border-color: rgba(200,169,110,0.2);
+  transform: translateY(-4px);
+}
+
+.testi-card-featured {
+  background: var(--gold);
+}
+.testi-card-featured:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(200,169,110,0.2);
+}
+
+.rating-banner {
+  background: var(--ink-3);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+
+/* ============================================================
+   APP DOWNLOAD
+   ============================================================ */
+.download-frame {
+  background: linear-gradient(135deg, #1a1510 0%, #0f0d0a 40%, #0D0D0D 100%);
+  border: 1px solid rgba(200,169,110,0.15);
+}
+
+.store-btn-light {
+  background: rgba(240,237,232,0.06);
+  color: var(--linen);
+  border: 1px solid rgba(240,237,232,0.1);
+  transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+.store-btn-light:hover {
+  background: rgba(240,237,232,0.1);
+  border-color: rgba(240,237,232,0.2);
+  transform: translateY(-2px);
+}
+
+.qr-box {
+  background: rgba(200,169,110,0.08);
+  border: 1px solid rgba(200,169,110,0.15);
+}
+
+/* Phone download section */
+.phone-download-1 {
+  animation: float 7s ease-in-out infinite;
+}
+.phone-download-2 {
+  animation: float 7s ease-in-out 1.5s infinite;
+}
+
+
+/* ============================================================
+   COVERAGE / MAP
+   ============================================================ */
+.coverage-map {
+  background: var(--ink-3);
+}
+
+/* Pulsing dot (Jakarta) */
+.pulse-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(200,169,110,0.2);
+  animation: pulse-expand 2s ease-out infinite;
+}
+
+@keyframes pulse-expand {
+  0%   { transform: translate(-50%,-50%) scale(0.5); opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(2.5); opacity: 0; }
+}
+
+.city-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.city-dot-sm {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.city-label {
+  position: absolute;
+  left: 24px;
+  top: -4px;
+  background: rgba(13,13,13,0.8);
+  border: 1px solid rgba(200,169,110,0.2);
+  color: var(--linen);
+  font-size: 9px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 8px;
+  white-space: nowrap;
+  line-height: 1.4;
+  backdrop-filter: blur(4px);
+}
+.city-label em {
+  color: var(--gold);
+  font-style: normal;
+}
+
+.city-label-sm {
+  color: var(--smoke);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.city-card {
+  background: var(--ink-3);
+  transition: border-color 0.3s, background 0.3s;
+}
+.city-card:hover {
+  border-color: rgba(200,169,110,0.2);
+  background: #1f1e1e;
+}
+
+.featured-city {
+  background: var(--gold);
+}
+
+
+/* ============================================================
+   REVEAL ANIMATIONS (JS-driven)
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s var(--ease-out-expo),
+              transform 0.75s var(--ease-out-expo);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   SOCIAL LINKS
+   ============================================================ */
+.social-link {
+  transition: border-color 0.25s, transform 0.25s;
+}
+.social-link:hover {
+  transform: translateY(-2px);
+}
+.social-link:hover svg {
+  color: var(--gold);
+  transition: color 0.25s;
+}
+
+
+/* ============================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================ */
+
+/* Mobile: tighten phone mockup */
+@media (max-width: 768px) {
+  .phone-float .notif-float {
+    display: none;
+  }
+  .phone-float .timer-float {
+    display: none;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}
